@@ -1,20 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Flex, Typography } from 'antd';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { registerUser } from '../../stores/actions/userAction';
 
 const { Title } = Typography;
 
 const RegisterPage = () => {
-    const onFinish = (values) => {
-        console.log('Registration successful:', values);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+    const onFinish = async (values) => {
+        setLoading(true);
+        try {
+            const token = await dispatch(registerUser(values.email, values.password));
+            if (token) {
+                navigate('/main'); // Переход на главную страницу
+            }
+        } catch (error) {
+            alert(error); // Показываем сообщение от сервера
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <Flex
-            style={{ height: '100vh' }}
-            justify="center"
-            align="center"
-        >
+        <Flex style={{ height: '100vh' }} justify="center" align="center">
             <Form
                 name="register"
                 initialValues={{ remember: true }}
@@ -29,56 +42,49 @@ const RegisterPage = () => {
                 }}
                 onFinish={onFinish}
             >
-                {/* Заголовок "Register" */}
-                <Title level={3} style={{ marginBottom: 20 }}>
-                    Register
-                </Title>
+                <Title level={3} style={{ marginBottom: 20 }}>Регистрация</Title>
 
-                {/* Поле Email */}
                 <Form.Item
                     name="email"
                     rules={[
-                        { required: true, message: 'Please input your Email!' },
-                        { type: 'email', message: 'Please enter a valid Email!' }
+                        { required: true, message: 'Введите Email!' },
+                        { type: 'email', message: 'Введите корректный Email!' }
                     ]}
                 >
                     <Input prefix={<MailOutlined />} placeholder="Email" />
                 </Form.Item>
 
-                {/* Поле Password */}
                 <Form.Item
                     name="password"
-                    rules={[{ required: true, message: 'Please input your Password!' }]}
+                    rules={[{ required: true, message: 'Введите пароль!' }]}
                 >
-                    <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+                    <Input.Password prefix={<LockOutlined />} placeholder="Пароль" />
                 </Form.Item>
 
-                {/* Поле Confirm Password */}
                 <Form.Item
                     name="confirm"
                     dependencies={['password']}
                     rules={[
-                        { required: true, message: 'Please confirm your Password!' },
+                        { required: true, message: 'Подтвердите пароль!' },
                         ({ getFieldValue }) => ({
                             validator(_, value) {
                                 if (!value || getFieldValue('password') === value) {
                                     return Promise.resolve();
                                 }
-                                return Promise.reject(new Error('Passwords do not match!'));
+                                return Promise.reject(new Error('Пароли не совпадают!'));
                             }
                         })
                     ]}
                 >
-                    <Input.Password prefix={<LockOutlined />} placeholder="Confirm Password" />
+                    <Input.Password prefix={<LockOutlined />} placeholder="Подтвердите пароль" />
                 </Form.Item>
 
-                {/* Кнопка регистрации */}
                 <Form.Item>
-                    <Button block type="primary" htmlType="submit">
-                        Register
+                    <Button block type="primary" htmlType="submit" loading={loading}>
+                        Зарегистрироваться
                     </Button>
                     <div style={{ marginTop: 10 }}>
-                        Already have an account? <a href="/login">Login</a>
+                        Уже есть аккаунт? <a href="/login">Войти</a>
                     </div>
                 </Form.Item>
             </Form>

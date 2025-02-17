@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, Typography, Flex } from 'antd';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../../stores/actions/userAction';
 
 const { Title } = Typography;
 
 const LoginPage = () => {
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+    const onFinish = async (values) => {
+        setLoading(true);
+        try {
+            const token = await dispatch(loginUser(values.email, values.password));
+            if (token) {
+                navigate('/main'); // Перенаправление на главную страницу
+            }
+        } catch (error) {
+            alert(error); // Показываем сообщение от сервера
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -30,35 +47,35 @@ const LoginPage = () => {
                 onFinish={onFinish}
             >
                 <Title level={3} style={{ marginBottom: 20 }}>
-                    Login
+                    Вход
                 </Title>
                 <Form.Item
                     name="email"
                     rules={[
-                        { required: true, message: 'Please input your Email!' },
-                        { type: 'email', message: 'Please enter a valid Email!' }
+                        { required: true, message: 'Введите Email!' },
+                        { type: 'email', message: 'Введите корректный Email!' }
                     ]}
                 >
                     <Input prefix={<UserOutlined />} placeholder="Email" />
                 </Form.Item>
                 <Form.Item
                     name="password"
-                    rules={[{ required: true, message: 'Please input your Password!' }]}
+                    rules={[{ required: true, message: 'Введите пароль!' }]}
                 >
-                    <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+                    <Input.Password prefix={<LockOutlined />} placeholder="Пароль" />
                 </Form.Item>
                 <Form.Item>
                     <Flex justify="space-between" align="center">
                         <Form.Item name="remember" valuePropName="checked" noStyle>
-                            <Checkbox>Remember me</Checkbox>
+                            <Checkbox>Запомнить меня</Checkbox>
                         </Form.Item>
                     </Flex>
                 </Form.Item>
                 <Form.Item>
-                    <Button block type="primary" htmlType="submit">
-                        Log in
+                    <Button block type="primary" htmlType="submit" loading={loading}>
+                        Войти
                     </Button>
-                    or <a href="/registration">Register now!</a>
+                    или <a href="/registration">Зарегистрироваться</a>
                 </Form.Item>
             </Form>
         </Flex>
@@ -66,3 +83,7 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+
+
+

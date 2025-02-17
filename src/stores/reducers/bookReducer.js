@@ -14,8 +14,43 @@ export const bookReducer = (state = defaultState, action) => {
                     ...state.books,
                     items: action.payload
                 }
-            }
+            };
+        case "CREATE_BOOK":
+            return {
+                ...state,
+                books: {
+                    ...state.books,
+                    items: [...state.books.items, action.payload] // Добавление новой книги
+                }
+            };
+        case "DELETE_BOOK":
+            return {
+                ...state,
+                books: {
+                    ...state.books,
+                    items: state.books.items.filter(book => book.id !== action.payload) // Удаление книги по id
+                }
+            };
+        case "UPDATE_BOOK":
+            return {
+                ...state,
+                books: {
+                    ...state.books,
+                    items: state.books.items.map(book =>
+                        book.id === action.payload.id ? action.payload : book // Обновление информации о книге
+                    )
+                }
+            };
+        case "ERROR_BOOK":
+            return {
+                ...state,
+                books: {
+                    ...state.books,
+                    isError: true
+                }
+            };
         default:
-            return state
+            return state;
     }
 }
+
