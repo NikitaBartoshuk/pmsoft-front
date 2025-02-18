@@ -1,8 +1,10 @@
 import axios from "axios";
 import { API } from "../../utils/consts";
 import { Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
+import { RootState } from "../index";
 
-interface Book {
+export interface Book {
     id: number;
     title: string;
     author: string;
@@ -58,9 +60,8 @@ const handleAxiosError = (error: unknown): string => {
     return "Неизвестная ошибка";
 };
 
-export const getBooks = (filters: Record<string, any> = {}) => {
+export const getBooks = (filters: Record<string, any> = {}): ThunkAction<void, RootState, unknown, BookActions> => {
     return async (dispatch: Dispatch<BookActions>) => {
-        console.log("Отправляемые фильтры:", filters);
         try {
             const response = await axios.get<Book[]>(API.book.getAll, { params: filters });
             dispatch({ type: BookActionTypes.GET_BOOKS, payload: response.data });

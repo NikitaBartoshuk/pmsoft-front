@@ -1,17 +1,19 @@
 import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Typography, Flex } from 'antd';
+import { Button, Checkbox, Form, Input, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { useLogin } from '../../hooks/useLogin';
 import styles from './loginpage.module.css';
+import { useValidationRules } from "../../utils/validationRules";
 
 const { Title } = Typography;
 
-const LoginPage = () => {
-    const { onLogin, loading, validationRules } = useLogin();
+const LoginPage: React.FC = () => {
+    const { onLogin, loading } = useLogin();
+    const validationRules = useValidationRules();
 
     return (
-        <Flex className={styles['login-page-container']} justify="center" align="center">
+        <div className={styles['login-page-container']} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Form
                 name="login"
                 initialValues={{ remember: true }}
@@ -39,8 +41,9 @@ const LoginPage = () => {
                     </div>
                 </Form.Item>
             </Form>
-        </Flex>
+        </div>
     );
 };
 
 export default LoginPage;
+

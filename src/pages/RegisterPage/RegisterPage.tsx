@@ -3,7 +3,7 @@ import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Flex, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { useRegister } from '../../hooks/useRegister';
-import { validationRules } from '../../utils/validationRules';
+import { useValidationRules } from "../../utils/validationRules";
 
 const { Title } = Typography;
 
@@ -19,6 +19,7 @@ const RegisterPage: React.FC = () => {
     const handleFinish = (values: RegisterFormValues) => {
         onRegister(values);
     };
+    const validationRules = useValidationRules();
 
     return (
         <Flex style={{ height: '100vh' }} justify="center" align="center">
