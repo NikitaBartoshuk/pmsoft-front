@@ -1,10 +1,27 @@
 import axios from 'axios';
-import { API } from '../../utils/consts'
+import { API } from '../../utils/consts';
+import { Dispatch } from 'redux';
+import { ThunkAction } from 'redux-thunk';
+import { RootState } from '../index';
 
-export const registerUser = (email, password) => {
-    return async (dispatch) => {
+interface RegisterUserAction {
+    type: 'REG_USER';
+    payload: string;
+}
+
+interface LoginUserAction {
+    type: 'LOGIN_USER';
+    payload: string;
+}
+
+type AuthActionTypes = RegisterUserAction | LoginUserAction;
+
+type AuthThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AuthActionTypes>;
+
+export const registerUser = (email: string, password: string): AuthThunk<Promise<string>> => {
+    return async (dispatch: Dispatch<AuthActionTypes>) => {
         try {
-            const response = await axios.post(`${API.user.registration}`, {
+            const response = await axios.post<{ token: string }>(`${API.user.registration}`, {
                 email,
                 password
             });
@@ -17,18 +34,16 @@ export const registerUser = (email, password) => {
             } else {
                 throw new Error('Ошибка регистрации');
             }
-        } catch (error) {
+        } catch (error: any) {
             throw error.response?.data?.message || 'Ошибка при регистрации';
         }
     };
 };
 
-
-
-export const loginUser = (email, password) => {
-    return async (dispatch) => {
+export const loginUser = (email: string, password: string): AuthThunk<Promise<string>> => {
+    return async (dispatch: Dispatch<AuthActionTypes>) => {
         try {
-            const response = await axios.post(`${API.user.login}`, {
+            const response = await axios.post<{ token: string }>(`${API.user.login}`, {
                 email,
                 password
             });
@@ -41,29 +56,9 @@ export const loginUser = (email, password) => {
             } else {
                 throw new Error('Ошибка авторизации');
             }
-        } catch (error) {
+        } catch (error: any) {
             throw error.response?.data?.message || 'Ошибка при входе';
         }
     };
 };
 
-
-export const checkAuth = () => async (dispatch) => {
-    try {
-        const token = localStorage.getItem('token');
-        if (!token) return;
-
-        const response = await axios.get(`${API.user.auth}`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-
-        dispatch({
-            type: 'LOGIN_USER',
-            payload: response.data.token
-        });
-        localStorage.setItem('token', response.data.token);
-    } catch (error) {
-        console.error("Ошибка проверки авторизации:", error.response?.data?.message || error.message);
-        localStorage.removeItem('token');
-    }
-};

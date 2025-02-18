@@ -1,9 +1,24 @@
-export const REGISTRATION_ROUTE = '/registration'
-export const LOGIN_ROUTE = '/login'
-export const MAIN_ROUTE = '/main'
+export const REGISTRATION_ROUTE: string = '/registration';
+export const LOGIN_ROUTE: string = '/login';
+export const MAIN_ROUTE: string = '/main';
 
-export const API = {
-    baseUrl: 'http://localhost:5000/api/',
+interface APIEndpoints {
+    baseUrl: string;
+    user: {
+        login: string;
+        registration: string;
+        auth: string;
+    };
+    book: {
+        getAll: string;
+        create: string;
+        delete: string;
+        update: string;
+    };
+}
+
+export const API: APIEndpoints = {
+    baseUrl: 'http://localhost:5000/',
     user: {
         login: 'http://localhost:5000/api/user/login',
         registration: 'http://localhost:5000/api/user/registration',
@@ -15,9 +30,14 @@ export const API = {
         delete: 'http://localhost:5000/api/book/',
         update: 'http://localhost:5000/api/book/'
     }
+};
+
+export interface GenreOption {
+    id: number;
+    title: string;
 }
 
-export const GENRE_OPTIONS = [
+export const GENRE_OPTIONS: GenreOption[] = [
     { id: 1, title: "Фэнтези" },
     { id: 2, title: "Приключения" },
     { id: 3, title: "Юмор" },

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "lib": ["dom", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "jsx": "react",
+    "outDir": "./build",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*", "public/**/*", "src/declarations.d.ts"],
+  "exclude": ["node_modules", "build"]
+}

@@ -1,0 +1,21 @@
+.filters-container {
+    margin: 20px 0;
+    padding: 10px;
+}
+
+.filter-book-name {
+    width: 220px;
+}
+
+.filter-datepicker {
+    width: 120px;
+}
+
+.filter-select-genre {
+    width: 150px;
+}
+
+.filter-buttons-container {
+    display: flex;
+    justify-content: space-between;
+}

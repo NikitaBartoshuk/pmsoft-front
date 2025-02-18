@@ -1,81 +1,42 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, Typography, Flex } from 'antd';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../../stores/actions/userAction';
+import { Link } from 'react-router-dom';
+import { useLogin } from '../../hooks/useLogin';
+import styles from './loginpage.module.css';
 
 const { Title } = Typography;
 
 const LoginPage = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
-
-    const onFinish = async (values) => {
-        setLoading(true);
-        try {
-            const token = await dispatch(loginUser(values.email, values.password));
-            if (token) {
-                navigate('/main'); // Перенаправление на главную страницу
-            }
-        } catch (error) {
-            alert(error); // Показываем сообщение от сервера
-        } finally {
-            setLoading(false);
-        }
-    };
+    const { onLogin, loading, validationRules } = useLogin();
 
     return (
-        <Flex
-            style={{ height: '100vh' }}
-            justify="center"
-            align="center"
-        >
+        <Flex className={styles['login-page-container']} justify="center" align="center">
             <Form
                 name="login"
                 initialValues={{ remember: true }}
-                style={{
-                    width: 360,
-                    padding: 24,
-                    borderRadius: 12,
-                    border: '1px solid #d9d9d9',
-                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-                    background: 'white',
-                    textAlign: 'center'
-                }}
-                onFinish={onFinish}
+                className={styles['login-page-form']}
+                onFinish={onLogin}
             >
-                <Title level={3} style={{ marginBottom: 20 }}>
+                <Title level={3} className={styles['login-page-form-title']}>
                     Вход
                 </Title>
-                <Form.Item
-                    name="email"
-                    rules={[
-                        { required: true, message: 'Введите Email!' },
-                        { type: 'email', message: 'Введите корректный Email!' }
-                    ]}
-                >
+                <Form.Item name="email" rules={validationRules.email}>
                     <Input prefix={<UserOutlined />} placeholder="Email" />
                 </Form.Item>
-                <Form.Item
-                    name="password"
-                    rules={[{ required: true, message: 'Введите пароль!' }]}
-                >
+                <Form.Item name="password" rules={validationRules.password}>
                     <Input.Password prefix={<LockOutlined />} placeholder="Пароль" />
                 </Form.Item>
                 <Form.Item>
-                    <Flex justify="space-between" align="center">
-                        <Form.Item name="remember" valuePropName="checked" noStyle>
-                            <Checkbox>Запомнить меня</Checkbox>
-                        </Form.Item>
-                    </Flex>
+                    <Checkbox name="remember">Запомнить меня</Checkbox>
                 </Form.Item>
                 <Form.Item>
-                    <Button block type="primary" htmlType="submit" loading={loading}>
+                    <Button block type="primary" htmlType="submit" loading={loading} disabled={loading}>
                         Войти
                     </Button>
-                    или <a href="/registration">Зарегистрироваться</a>
+                    <div className={styles['login-page-links']}>
+                        <span>или <Link to="/registration">Зарегистрироваться</Link></span>
+                    </div>
                 </Form.Item>
             </Form>
         </Flex>
@@ -83,7 +44,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
-
-
-

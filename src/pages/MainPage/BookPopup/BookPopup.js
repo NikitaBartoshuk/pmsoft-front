@@ -1,56 +1,43 @@
 import React, { useState } from 'react';
 import { Modal, Row, Col, Typography, Button } from 'antd';
 import { useDispatch } from 'react-redux';
-import { deleteBook } from '../../stores/actions/bookAction';
+import { deleteBook } from '../../../stores/actions/bookAction';
 import AddBookPopup from '../AddBookPopup/AddBookPopup';
+import { API } from '../../../utils/consts'
+import styles from './bookpopup.module.css'
 
 const { Title, Text } = Typography;
 
 const BookPopup = ({ book, visible, onClose }) => {
     const dispatch = useDispatch();
     const [isEditMode, setIsEditMode] = useState(false);
-    const [isPopupVisible, setIsPopupVisible] = useState(visible);
 
-    const handleDelete = (bookId) => {
-        dispatch(deleteBook(bookId));
-        setIsPopupVisible(false);
+    const handleDelete = () => {
+        dispatch(deleteBook(book.id));
         onClose();
     };
 
-    const handleEdit = () => {
-        setIsEditMode(true);
-        setIsPopupVisible(false); // Закрываем BookPopup
-    };
+    const handleEdit = () => setIsEditMode(true);
 
-    const handleSaveEdit = (updatedBook) => {
+    const handleSaveEdit = () => {
         setIsEditMode(false);
-        setIsPopupVisible(true); // Открываем BookPopup заново
-        setTimeout(() => {
-            onClose(); // Закрываем, чтобы обновились данные
-        }, 0);
+        onClose();
     };
 
     return (
         <>
             <Modal
-                title={null}
-                visible={isPopupVisible}
-                onCancel={() => {
-                    setIsPopupVisible(false);
-                    onClose();
-                }}
+                visible={visible && !isEditMode}
+                onCancel={onClose}
                 footer={null}
                 width={800}
             >
                 <Row gutter={24}>
                     <Col span={12}>
                         <img
-                            src={`http://localhost:5000/${book.img}`}
+                            src={`${API.baseUrl + book.img}`}
                             alt={book.name}
-                            style={{
-                                width: '100%',
-                                borderRadius: '8px',
-                            }}
+                            className={styles['book-popup-name']}
                         />
                     </Col>
                     <Col span={12}>
@@ -65,12 +52,11 @@ const BookPopup = ({ book, visible, onClose }) => {
                         <Text>{book.description}</Text>
                     </Col>
                 </Row>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-                    <Button type="danger" onClick={() => handleDelete(book.id)} style={{ width: '48%' }}>
+                <div className={styles['book-popup-button-container']}>
+                    <Button type="danger" onClick={handleDelete} className={styles['book-popup-btn']}>
                         Удалить
                     </Button>
-                    <Button type="primary" onClick={handleEdit} style={{ width: '48%' }}>
+                    <Button type="primary" onClick={handleEdit} className={styles['book-popup-btn']}>
                         Изменить
                     </Button>
                 </div>
@@ -81,7 +67,7 @@ const BookPopup = ({ book, visible, onClose }) => {
                     visible={isEditMode}
                     onClose={handleSaveEdit}
                     book={book}
-                    isEdit={true}
+                    isEdit
                 />
             )}
         </>

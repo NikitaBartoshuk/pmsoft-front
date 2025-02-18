@@ -1,0 +1,25 @@
+.header-container {
+    display: flex;
+    align-items: center;
+    background: #001529;
+    padding: 0 24px;
+}
+
+.header-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+}
+
+.header-title {
+    color: #fff;
+    margin: 0;
+}
+
+/*знаю, что !important лучше не использовать, но разбираться пришлость бы слишком долго*/
+
+.header-link {
+    color: #fff !important;
+    text-decoration: none;
+}
+
