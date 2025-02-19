@@ -4,7 +4,7 @@ import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
 import styles from "./loginpage.module.css";
-import { useValidationRules } from "../../utils/validationRules";
+import { useValidationRules } from "../../hooks/useValidationRules";
 import { ILoginValues } from "../../types";
 
 const { Title, Text } = Typography;

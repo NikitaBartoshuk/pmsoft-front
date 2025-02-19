@@ -3,7 +3,7 @@ import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Flex, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { useRegister } from '../../hooks/useRegister';
-import { useValidationRules } from "../../utils/validationRules";
+import { useValidationRules } from "../../hooks/useValidationRules";
 import { IRegisterFormValues } from '../../types'
 import styles from './registerpage.module.css'
 

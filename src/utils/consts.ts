@@ -2,7 +2,7 @@ export const REGISTRATION_ROUTE: string = '/registration';
 export const LOGIN_ROUTE: string = '/login';
 export const MAIN_ROUTE: string = '/main';
 
-interface APIEndpoints {
+interface IAPIEndpoints {
     baseUrl: string;
     user: {
         login: string;
@@ -17,7 +17,7 @@ interface APIEndpoints {
     };
 }
 
-export const API: APIEndpoints = {
+export const API: IAPIEndpoints = {
     baseUrl: 'http://localhost:5000/',
     user: {
         login: 'http://localhost:5000/api/user/login',
@@ -32,12 +32,12 @@ export const API: APIEndpoints = {
     }
 };
 
-export interface GenreOption {
+export interface IGenreOption {
     id: number;
     title: string;
 }
 
-export const GENRE_OPTIONS: GenreOption[] = [
+export const GENRE_OPTIONS: IGenreOption[] = [
     { id: 1, title: "Фэнтези" },
     { id: 2, title: "Приключения" },
     { id: 3, title: "Юмор" },
