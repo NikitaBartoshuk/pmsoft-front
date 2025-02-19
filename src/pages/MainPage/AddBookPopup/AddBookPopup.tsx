@@ -3,15 +3,19 @@ import { Modal, Form, Input, Select, DatePicker, Button, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { GENRE_OPTIONS } from "../../../utils/consts";
 import useBookForm from "../../../hooks/useBookForm";
+import { AddBookPopupProps} from "../../../types";
 
 const { Option } = Select;
 
-const AddBookPopup = ({ visible, onClose, isEdit, book }) => {
+const AddBookPopup: React.FC<AddBookPopupProps> = ({ visible, onClose, isEdit = false, book = {} }) => {
+    const { form, initialValues, onFinish, handleImageUpload } = useBookForm({ isEdit, book, onClose });
 
-    const { form, initialValues, onFinish, handleImageUpload } = useBookForm(isEdit, book, onClose);
+    const handleCancel = () => {
+        onClose();
+    };
 
     return (
-        <Modal title={isEdit ? "Изменить книгу" : "Добавить книгу"} open={visible} onCancel={onClose} footer={null}>
+        <Modal title={isEdit ? "Изменить книгу" : "Добавить книгу"} open={visible} onCancel={handleCancel} footer={null}>
             <Form layout="vertical" form={form} initialValues={initialValues} onFinish={onFinish}>
                 <Form.Item name="name" label="Название книги" rules={[{ required: true, message: "Введите название" }]}>
                     <Input />
@@ -51,7 +55,7 @@ const AddBookPopup = ({ visible, onClose, isEdit, book }) => {
                 </Form.Item>
 
                 <Form.Item>
-                    <Button onClick={onClose} style={{ marginRight: 8 }}>
+                    <Button onClick={handleCancel} style={{ marginRight: 8 }}>
                         Отмена
                     </Button>
                     <Button type="primary" htmlType="submit">

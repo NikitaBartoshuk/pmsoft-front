@@ -3,55 +3,7 @@ import { API } from "../../utils/consts";
 import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { RootState } from "../index";
-
-export interface Book {
-    id: number;
-    title: string;
-    author: string;
-    year: number;
-    genre: string;
-}
-
-enum BookActionTypes {
-    GET_BOOKS = "GET_BOOKS",
-    ERROR_BOOKS = "ERROR_BOOKS",
-    ERROR_BOOK = "ERROR_BOOK",
-    CREATE_BOOK = "CREATE_BOOK",
-    DELETE_BOOK = "DELETE_BOOK",
-    UPDATE_BOOK = "UPDATE_BOOK",
-}
-
-interface GetBooksAction {
-    type: BookActionTypes.GET_BOOKS;
-    payload: Book[];
-}
-
-interface ErrorBooksAction {
-    type: BookActionTypes.ERROR_BOOKS | BookActionTypes.ERROR_BOOK;
-    payload: boolean | string;
-}
-
-interface CreateBookAction {
-    type: BookActionTypes.CREATE_BOOK;
-    payload: Book;
-}
-
-interface DeleteBookAction {
-    type: BookActionTypes.DELETE_BOOK;
-    payload: number;
-}
-
-interface UpdateBookAction {
-    type: BookActionTypes.UPDATE_BOOK;
-    payload: Book;
-}
-
-type BookActions =
-    | GetBooksAction
-    | ErrorBooksAction
-    | CreateBookAction
-    | DeleteBookAction
-    | UpdateBookAction;
+import { Book, BookAction, BookActionTypes } from "../../types";
 
 const handleAxiosError = (error: unknown): string => {
     if (axios.isAxiosError(error)) {
@@ -60,21 +12,23 @@ const handleAxiosError = (error: unknown): string => {
     return "Неизвестная ошибка";
 };
 
-export const getBooks = (filters: Record<string, any> = {}): ThunkAction<void, RootState, unknown, BookActions> => {
-    return async (dispatch: Dispatch<BookActions>) => {
+export const getBooks = (filters: Record<string, any> = {}): ThunkAction<void, RootState, unknown, BookAction> => {
+    return async (dispatch: Dispatch<BookAction>) => {
         try {
             const response = await axios.get<Book[]>(API.book.getAll, { params: filters });
             dispatch({ type: BookActionTypes.GET_BOOKS, payload: response.data });
         } catch (error: unknown) {
-            dispatch({ type: BookActionTypes.ERROR_BOOKS, payload: handleAxiosError(error) });
+            dispatch({ type: BookActionTypes.ERROR_BOOK, payload: handleAxiosError(error) });
         }
     };
 };
 
-export const createBook = (bookData: Omit<Book, "id">) => {
-    return async (dispatch: Dispatch<BookActions>) => {
+export const createBook = (bookData: FormData) => {
+    return async (dispatch: Dispatch<BookAction>) => {
         try {
-            const response = await axios.post<Book>(API.book.create, bookData);
+            const response = await axios.post<Book>(API.book.create, bookData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
             dispatch({ type: BookActionTypes.CREATE_BOOK, payload: response.data });
             console.log("Книга успешно добавлена:", response.data);
         } catch (error: unknown) {
@@ -85,7 +39,7 @@ export const createBook = (bookData: Omit<Book, "id">) => {
 };
 
 export const deleteBook = (bookId: number) => {
-    return async (dispatch: Dispatch<BookActions>) => {
+    return async (dispatch: Dispatch<BookAction>) => {
         try {
             await axios.delete(`${API.book.delete}${bookId}`);
             dispatch({ type: BookActionTypes.DELETE_BOOK, payload: bookId });
@@ -97,10 +51,12 @@ export const deleteBook = (bookId: number) => {
     };
 };
 
-export const updateBook = (bookId: number, updatedData: Partial<Book>) => {
-    return async (dispatch: Dispatch<BookActions>) => {
+export const updateBook = (bookId: number, updatedData: FormData) => {
+    return async (dispatch: Dispatch<BookAction>) => {
         try {
-            const response = await axios.put<Book>(`${API.book.update}${bookId}`, updatedData);
+            const response = await axios.put<Book>(`${API.book.update}${bookId}`, updatedData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
             dispatch({ type: BookActionTypes.UPDATE_BOOK, payload: response.data });
             console.log(`Книга с ID ${bookId} успешно обновлена.`);
         } catch (error: unknown) {
@@ -109,3 +65,5 @@ export const updateBook = (bookId: number, updatedData: Partial<Book>) => {
         }
     };
 };
+
+

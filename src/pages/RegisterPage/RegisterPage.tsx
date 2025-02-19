@@ -4,14 +4,9 @@ import { Button, Form, Input, Flex, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { useRegister } from '../../hooks/useRegister';
 import { useValidationRules } from "../../utils/validationRules";
+import { RegisterFormValues } from '../../types'
 
 const { Title } = Typography;
-
-interface RegisterFormValues {
-    email: string;
-    password: string;
-    confirm: string;
-}
 
 const RegisterPage: React.FC = () => {
     const { onRegister, loading } = useRegister();

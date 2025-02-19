@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 import { Modal, Row, Col, Typography, Button } from 'antd';
-import { useDispatch } from 'react-redux';
 import { deleteBook } from '../../../stores/actions/bookAction';
 import AddBookPopup from '../AddBookPopup/AddBookPopup';
-import { API } from '../../../utils/consts'
-import styles from './bookpopup.module.css'
+import { API } from '../../../utils/consts';
+import styles from './bookpopup.module.css';
+import {useAppDispatch} from "../../../hooks/reduxHooks";
+import {BookPopupProps} from '../../../types'
 
 const { Title, Text } = Typography;
 
-const BookPopup = ({ book, visible, onClose }) => {
-    const dispatch = useDispatch();
+
+const BookPopup: React.FC<BookPopupProps> = ({ book, visible, onClose }) => {
+    const dispatch = useAppDispatch();
     const [isEditMode, setIsEditMode] = useState(false);
 
     const handleDelete = () => {
-        dispatch(deleteBook(book.id));
-        onClose();
+        if (book?.id) {
+            dispatch(deleteBook(book.id));
+            onClose();
+        } else {
+            console.error("Ошибка: ID книги не определен");
+        }
     };
 
     const handleEdit = () => setIsEditMode(true);
@@ -53,7 +59,7 @@ const BookPopup = ({ book, visible, onClose }) => {
                     </Col>
                 </Row>
                 <div className={styles['book-popup-button-container']}>
-                    <Button type="danger" onClick={handleDelete} className={styles['book-popup-btn']}>
+                    <Button type="dashed" onClick={handleDelete} className={styles['book-popup-btn']}>
                         Удалить
                     </Button>
                     <Button type="primary" onClick={handleEdit} className={styles['book-popup-btn']}>
@@ -75,6 +81,7 @@ const BookPopup = ({ book, visible, onClose }) => {
 };
 
 export default BookPopup;
+
 
 
 

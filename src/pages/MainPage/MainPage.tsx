@@ -5,15 +5,17 @@ import AppHeader from "./Header/AppHeader";
 import BookFilter from "./BookFilter/BookFilter";
 import BookPopup from "./BookPopup/BookPopup";
 import { useBooks } from "../../hooks/useBooks";
+import { Book } from '../../types'
 
 const { Meta } = Card;
 
 const MainPage = () => {
-    const { books, updateFilters } = useBooks();
-    const [selectedBook, setSelectedBook] = useState(null);
+    const { books, handleFilterChange } = useBooks();
+    const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const showModal = (book) => {
+    const showModal = (book: Book) => {
+        console.log(book)
         setSelectedBook(book);
         setIsModalVisible(true);
     };
@@ -26,15 +28,14 @@ const MainPage = () => {
     return (
         <div>
             <AppHeader />
-            <BookFilter onFilterChange={updateFilters} />
-
-            {books.items.length === 0 ? (
+            <BookFilter onFilterChange={handleFilterChange} />
+            {books?.items.length === 0 ? (
                 <Typography.Title level={4} style={{ textAlign: "center", marginTop: 50 }}>
                     Нет доступных книг
                 </Typography.Title>
             ) : (
                 <Row gutter={[24, 24]} justify="start" style={{ padding: "0 16px" }}>
-                    {books.items.map((book) => (
+                    {books?.items.map((book: Book) => (
                         <Col key={book.id} xs={24} sm={12} md={8} lg={6} xl={6}>
                             <Card
                                 hoverable
@@ -48,6 +49,7 @@ const MainPage = () => {
                 </Row>
             )}
 
+
             {selectedBook && (
                 <BookPopup book={selectedBook} visible={isModalVisible} onClose={handleCancel} />
             )}
@@ -56,7 +58,4 @@ const MainPage = () => {
 };
 
 export default MainPage;
-
-
-
 

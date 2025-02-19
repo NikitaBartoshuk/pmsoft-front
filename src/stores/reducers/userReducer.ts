@@ -1,27 +1,16 @@
-interface UserState {
-    token: string;
-}
+import { UserState, UserAction, UserActionTypes } from "../../types";
 
 const defaultState: UserState = {
     token: ''
 };
 
-interface RegUserAction {
-    type: 'REG_USER';
-    payload: string;
-}
-
-interface LoginUserAction {
-    type: 'LOGIN_USER';
-    payload: string;
-}
-
-type UserAction = RegUserAction | LoginUserAction;
-
-export const userReducer = (state: UserState = defaultState, action: UserAction): UserState => {
+export const userReducer = (
+    state: UserState = defaultState,
+    action: UserAction
+): UserState => {
     switch (action.type) {
-        case 'REG_USER':
-        case 'LOGIN_USER':
+        case UserActionTypes.REG_USER:
+        case UserActionTypes.LOGIN_USER:
             return {
                 ...state,
                 token: action.payload

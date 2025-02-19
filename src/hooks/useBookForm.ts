@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { Form, message } from "antd";
-import { useDispatch } from "react-redux";
 import { createBook, updateBook } from "../stores/actions/bookAction";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import dayjs from "dayjs";
+import { BookFormValues, UseBookFormProps, UseBookFormReturn } from "../types";
 
-const useBookForm = (isEdit, book, onClose) => {
+const useBookForm = ({ isEdit, book, onClose }: UseBookFormProps): UseBookFormReturn => {
     const [form] = Form.useForm();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (isEdit && book) {
@@ -22,23 +23,29 @@ const useBookForm = (isEdit, book, onClose) => {
         }
     }, [isEdit, book, form]);
 
-    const onFinish = values => {
-        const formData = new FormData();
-        formData.append("name", values.name);
-        formData.append("author", values.author);
-        formData.append("genre", values.genre);
-        formData.append("year", values.year ? values.year.format("YYYY") : "");
-        formData.append("description", values.description || "");
+    const onFinish = (values: BookFormValues) => {
+        const formData: any = {
+            name: values.name,
+            author: values.author,
+            genre: values.genre,
+            year: values.year ? values.year.format("YYYY") : "",
+            description: values.description || "",
+        };
 
         const file = values.image?.[0]?.originFileObj;
         if (file) {
-            formData.append("img", file);
+            formData.img = file;
         } else if (!isEdit) {
             message.error("Ошибка: загрузите изображение!");
             return;
         }
 
-        const action = isEdit ? updateBook(book.id, formData) : createBook(formData);
+        console.log("Данные, отправляемые в экшен:");
+        Object.keys(formData).forEach((key) => {
+            console.log(key, formData[key]);
+        });
+
+        const action = isEdit ? updateBook(book?.id as number, formData) : createBook(formData);
         dispatch(action)
             .then(() => {
                 message.success(isEdit ? "Книга обновлена!" : "Книга добавлена!");
@@ -48,13 +55,16 @@ const useBookForm = (isEdit, book, onClose) => {
             .catch(() => message.error("Ошибка при сохранении книги!"));
     };
 
-    const handleImageUpload = e => (Array.isArray(e) ? e : e?.fileList);
+    const handleImageUpload = (e: any) => (Array.isArray(e) ? e : e?.fileList);
 
     return {
         form,
         initialValues: {
-            ...book,
+            name: book?.name || "",
+            author: book?.author || "",
+            genre: book?.genre || "",
             year: book?.year ? dayjs(String(book.year), "YYYY") : null,
+            description: book?.description || "",
         },
         onFinish,
         handleImageUpload,
@@ -62,3 +72,5 @@ const useBookForm = (isEdit, book, onClose) => {
 };
 
 export default useBookForm;
+
+

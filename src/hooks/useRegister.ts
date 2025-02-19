@@ -1,14 +1,10 @@
-import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../stores/actions/userAction';
-import {useAppDispatch} from "../hooks/reduxHooks";
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../stores/actions/userAction";
+import { useAppDispatch } from "../hooks/reduxHooks";
+import { RegisterValues, UseRegisterReturn } from "../types";
 
-interface RegisterValues {
-    email: string;
-    password: string;
-}
-
-export const useRegister = () => {
+export const useRegister = (): UseRegisterReturn => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
@@ -18,7 +14,7 @@ export const useRegister = () => {
         try {
             const token = await dispatch(registerUser(values.email, values.password));
             if (token) {
-                navigate('/main');
+                navigate("/main");
             }
         } catch (error) {
             alert(error);
@@ -29,3 +25,4 @@ export const useRegister = () => {
 
     return { onRegister, loading };
 };
+

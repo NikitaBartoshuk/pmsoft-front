@@ -4,10 +4,11 @@ import AddBookPopup from '../AddBookPopup/AddBookPopup';
 import { GENRE_OPTIONS } from '../../../utils/consts';
 import useBookFilters from '../../../hooks/useBookFilters';
 import styles from './bookfilter.module.css';
+import { BookFilterProps } from "../../../types";
 
 const { Option } = Select;
 
-const BookFilterComponent = ({ onFilterChange }) => {
+const BookFilterComponent: React.FC<BookFilterProps> = ({ onFilterChange }) => {
     const {
         filters,
         isModalOpen,
@@ -15,7 +16,7 @@ const BookFilterComponent = ({ onFilterChange }) => {
         applyFilters,
         openModal,
         closeModal
-    } = useBookFilters(onFilterChange);
+    } = useBookFilters({ onFilterChange });
 
     return (
         <>
@@ -87,4 +88,5 @@ const BookFilterComponent = ({ onFilterChange }) => {
 const BookFilter = memo(BookFilterComponent);
 
 export default BookFilter;
+
 

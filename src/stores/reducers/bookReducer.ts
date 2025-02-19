@@ -1,16 +1,4 @@
-interface Book {
-    id: number;
-    title: string;
-    author: string;
-    genre: string;
-}
-
-interface BookState {
-    books: {
-        items: Book[];
-        isError: boolean;
-    };
-}
+import { BookState, BookAction, BookActionTypes } from "../../types";
 
 const defaultState: BookState = {
     books: {
@@ -19,35 +7,12 @@ const defaultState: BookState = {
     }
 };
 
-interface GetBooksAction {
-    type: "GET_BOOKS";
-    payload: Book[];
-}
-
-interface CreateBookAction {
-    type: "CREATE_BOOK";
-    payload: Book;
-}
-
-interface DeleteBookAction {
-    type: "DELETE_BOOK";
-    payload: number;
-}
-
-interface UpdateBookAction {
-    type: "UPDATE_BOOK";
-    payload: Book;
-}
-
-interface ErrorBookAction {
-    type: "ERROR_BOOK";
-}
-
-type BookAction = GetBooksAction | CreateBookAction | DeleteBookAction | UpdateBookAction | ErrorBookAction;
-
-export const bookReducer = (state: BookState = defaultState, action: BookAction): BookState => {
+export const bookReducer = (
+    state: BookState = defaultState,
+    action: BookAction
+): BookState => {
     switch (action.type) {
-        case "GET_BOOKS":
+        case BookActionTypes.GET_BOOKS:
             return {
                 ...state,
                 books: {
@@ -55,7 +20,7 @@ export const bookReducer = (state: BookState = defaultState, action: BookAction)
                     items: action.payload
                 }
             };
-        case "CREATE_BOOK":
+        case BookActionTypes.CREATE_BOOK:
             return {
                 ...state,
                 books: {
@@ -63,7 +28,7 @@ export const bookReducer = (state: BookState = defaultState, action: BookAction)
                     items: [...state.books.items, action.payload]
                 }
             };
-        case "DELETE_BOOK":
+        case BookActionTypes.DELETE_BOOK:
             return {
                 ...state,
                 books: {
@@ -71,7 +36,7 @@ export const bookReducer = (state: BookState = defaultState, action: BookAction)
                     items: state.books.items.filter(book => book.id !== action.payload)
                 }
             };
-        case "UPDATE_BOOK":
+        case BookActionTypes.UPDATE_BOOK:
             return {
                 ...state,
                 books: {
@@ -81,7 +46,7 @@ export const bookReducer = (state: BookState = defaultState, action: BookAction)
                     )
                 }
             };
-        case "ERROR_BOOK":
+        case BookActionTypes.ERROR_BOOK:
             return {
                 ...state,
                 books: {
@@ -93,4 +58,5 @@ export const bookReducer = (state: BookState = defaultState, action: BookAction)
             return state;
     }
 };
+
 

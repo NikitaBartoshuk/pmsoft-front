@@ -1,14 +1,10 @@
-import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../stores/actions/userAction';
-import {useAppDispatch} from "../hooks/reduxHooks";
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../stores/actions/userAction";
+import { useAppDispatch } from "../hooks/reduxHooks";
+import { LoginValues, UseLoginReturn } from "../types";
 
-interface LoginValues {
-    email: string;
-    password: string;
-}
-
-export const useLogin = () => {
+export const useLogin = (): UseLoginReturn => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
@@ -18,7 +14,7 @@ export const useLogin = () => {
         try {
             const token = await dispatch(loginUser(values.email, values.password));
             if (token) {
-                navigate('/main');
+                navigate("/main");
             }
         } catch (error) {
             alert(error);
@@ -29,3 +25,4 @@ export const useLogin = () => {
 
     return { onLogin, loading };
 };
+

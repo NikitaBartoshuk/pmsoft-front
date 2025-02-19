@@ -1,31 +1,29 @@
 import { useState, useEffect, useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";  // Путь к вашим типизированным хукам
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { getBooks } from "../stores/actions/bookAction";
+import { UseBooksReturn, UseBooksFilters } from "../types/hooksTypes";
 
-interface Filters {
-    name?: string;
-    author?: string;
-    genre?: string;
-    year?: number | string;
-}
-
-export const useBooks = () => {
+export const useBooks = (): UseBooksReturn => {
     const dispatch = useAppDispatch();
-
-    // Типизируем state.book.books как массив книг
     const books = useAppSelector((state) => state.book.books);
-
-    // Типизируем filters с учетом возможных полей
-    const [filters, setFilters] = useState<Filters>({});
+    const [filters, setFilters] = useState<UseBooksFilters>({});
 
     useEffect(() => {
         dispatch(getBooks(filters));
     }, [dispatch, filters]);
 
-    // Обновляем фильтры
-    const updateFilters = useCallback((newFilters: Filters) => {
+    const updateFilters = useCallback((newFilters: UseBooksFilters) => {
         setFilters(newFilters);
     }, []);
 
-    return { books, updateFilters };
+    const handleFilterChange = (filters: { name: string | null; author: string | null; year: string | null; genre: string | null }) => {
+        updateFilters({
+            name: filters.name ?? undefined,
+            author: filters.author ?? undefined,
+            year: filters.year ?? undefined,
+            genre: filters.genre ?? undefined,
+        });
+    };
+
+    return { books, handleFilterChange };
 };
