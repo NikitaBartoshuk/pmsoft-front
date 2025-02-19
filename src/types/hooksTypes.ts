@@ -1,18 +1,19 @@
 import { FormInstance } from "antd";
 import dayjs from "dayjs";
-import { Book } from "./bookTypes";
+import { IBook } from "./bookTypes";
 
 // Типы для useBookFilters
-export interface Filters {
+export interface IFilters {
     name: string;
     author: string;
     genre: string | null;
     year: string | null;
     filterByAuthor: boolean;
     filterByYear: boolean;
+    filterByName: boolean;
 }
 
-export interface UseBookFiltersProps {
+export interface IUseBookFiltersProps {
     onFilterChange: (filters: {
         name: string | null;
         author: string | null;
@@ -21,17 +22,16 @@ export interface UseBookFiltersProps {
     }) => void;
 }
 
-export interface UseBookFiltersReturn {
-    filters: Filters;
+export interface IUseBookFiltersReturn {
+    filters: IFilters;
     isModalOpen: boolean;
-    handleChange: (key: keyof Filters, value: string | boolean | null) => void;
-    applyFilters: () => void;
+    handleChange: (key: keyof IFilters, value: string | boolean | null) => void;
     openModal: () => void;
     closeModal: () => void;
 }
 
 // Типы для useBookForm
-export interface BookFormValues {
+export interface IBookFormValues {
     name: string;
     author: string;
     genre: string;
@@ -40,22 +40,22 @@ export interface BookFormValues {
     image?: any;
 }
 
-export interface UseBookFormProps {
+export interface IUseBookFormProps {
     isEdit: boolean;
     book: any;
     onClose: () => void;
 }
 
-export interface UseBookFormReturn {
+export interface IUseBookFormReturn {
     form: FormInstance;
-    initialValues: BookFormValues;
-    onFinish: (values: BookFormValues) => void;
+    initialValues: IBookFormValues;
+    onFinish: (values: IBookFormValues) => void;
     handleImageUpload: (e: any) => any;
 }
 
 // Типы для useBooks
 
-export interface UseBooksFilters {
+export interface IUseBooksFilters {
     name?: string;
     author?: string;
     genre?: string;
@@ -63,14 +63,14 @@ export interface UseBooksFilters {
 }
 
 // Описание состояния книг
-export interface UseBookState {
-    items: Book[];
+export interface IUseBookState {
+    items: IBook[];
     isError: boolean;
 }
 
 // Описание возвращаемого значения useBooks
-export interface UseBooksReturn {
-    books: UseBookState;
+export interface IUseBooksReturn {
+    books: IUseBookState;
     handleFilterChange: (filters: {
         name: string | null;
         author: string | null;
@@ -80,28 +80,28 @@ export interface UseBooksReturn {
 }
 
 // Типы для useLogin
-export interface LoginValues {
+export interface ILoginValues {
     email: string;
     password: string;
 }
 
-export interface UseLoginReturn {
-    onLogin: (values: LoginValues) => Promise<void>;
+export interface IUseLoginReturn {
+    onLogin: (values: ILoginValues) => Promise<void>;
     loading: boolean;
 }
 
 // Типы для useRegister
-export interface RegisterValues {
+export interface IRegisterValues {
     email: string;
     password: string;
 }
 
-export interface UseRegisterReturn {
-    onRegister: (values: RegisterValues) => Promise<void>;
+export interface IUseRegisterReturn {
+    onRegister: (values: IRegisterValues) => Promise<void>;
     loading: boolean;
 }
 
-export interface RegisterFormValues {
+export interface IRegisterFormValues {
     email: string;
     password: string;
     confirm: string;

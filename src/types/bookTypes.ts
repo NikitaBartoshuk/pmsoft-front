@@ -6,7 +6,7 @@ export enum BookActionTypes {
     ERROR_BOOK = "ERROR_BOOK",
 }
 
-export interface Book {
+export interface IBook {
     id?: number;
     name: string;
     author: string;
@@ -16,41 +16,41 @@ export interface Book {
     img?: string;
 }
 
-export interface BookState {
+export interface IBookState {
     books: {
-        items: Book[];
+        items: IBook[];
         isError: boolean;
     };
 }
 
-export interface GetBooksAction {
+export interface IGetBooksAction {
     type: BookActionTypes.GET_BOOKS;
-    payload: Book[];
+    payload: IBook[];
 }
 
-export interface CreateBookAction {
+export interface ICreateBookAction {
     type: BookActionTypes.CREATE_BOOK;
-    payload: Book;
+    payload: IBook;
 }
 
-export interface DeleteBookAction {
+export interface IDeleteBookAction {
     type: BookActionTypes.DELETE_BOOK;
     payload: number;
 }
 
-export interface UpdateBookAction {
+export interface IUpdateBookAction {
     type: BookActionTypes.UPDATE_BOOK;
-    payload: Book;
+    payload: IBook;
 }
 
-export interface ErrorBookAction {
+export interface IErrorBookAction {
     type: BookActionTypes.ERROR_BOOK;
     payload: string;
 }
 
 export type BookAction =
-    | GetBooksAction
-    | CreateBookAction
-    | DeleteBookAction
-    | UpdateBookAction
-    | ErrorBookAction;
+    | IGetBooksAction
+    | ICreateBookAction
+    | IDeleteBookAction
+    | IUpdateBookAction
+    | IErrorBookAction;

@@ -1,15 +1,15 @@
-import { Book } from './bookTypes'
+import { IBook } from './bookTypes'
 
 // AddBookPopup
-export interface AddBookPopupProps {
+export interface IAddBookPopupProps {
     visible: boolean;
     onClose: () => void;
     isEdit?: boolean;
-    book?: Book;
+    book?: IBook;
 }
 
 // BookFilter
-export interface BookFilterProps {
+export interface IBookFilterProps {
     onFilterChange: (filters: {
         name: string | null;
         author: string | null;
@@ -19,8 +19,8 @@ export interface BookFilterProps {
 }
 
 // BookPopup
-export interface BookPopupProps {
-    book: Book;
+export interface IBookPopupProps {
+    book: IBook;
     visible: boolean;
     onClose: () => void;
 }

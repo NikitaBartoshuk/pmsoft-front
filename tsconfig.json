@@ -16,6 +16,8 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", "public/**/*", "src/declarations.d.ts"],
+  "include": ["src/**/*", "public/**/*",
+    "src/types/declarations.d.ts"
+  ],
   "exclude": ["node_modules", "build"]
 }

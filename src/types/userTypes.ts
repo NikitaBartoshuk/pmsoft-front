@@ -9,22 +9,22 @@ export enum UserActionTypes {
 }
 
 // Состояние пользователя
-export interface UserState {
+export interface IUserState {
     token: string;
 }
 
 // Экшены
-export interface RegUserAction {
+export interface IRegUserAction {
     type: UserActionTypes.REG_USER;
     payload: string;
 }
 
-export interface LoginUserAction {
+export interface ILoginUserAction {
     type: UserActionTypes.LOGIN_USER;
     payload: string;
 }
 
-export type UserAction = RegUserAction | LoginUserAction;
+export type UserAction = IRegUserAction | ILoginUserAction;
 
 // Thunk для асинхронных экшенов
 export type AuthThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, UserAction>;

@@ -3,11 +3,11 @@ import { Modal, Form, Input, Select, DatePicker, Button, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { GENRE_OPTIONS } from "../../../utils/consts";
 import useBookForm from "../../../hooks/useBookForm";
-import { AddBookPopupProps} from "../../../types";
+import { IAddBookPopupProps} from "../../../types";
 
 const { Option } = Select;
 
-const AddBookPopup: React.FC<AddBookPopupProps> = ({ visible, onClose, isEdit = false, book = {} }) => {
+const AddBookPopup: React.FC<IAddBookPopupProps> = ({ visible, onClose, isEdit = false, book = {} }) => {
     const { form, initialValues, onFinish, handleImageUpload } = useBookForm({ isEdit, book, onClose });
 
     const handleCancel = () => {

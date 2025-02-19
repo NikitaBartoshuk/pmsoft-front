@@ -1,19 +1,18 @@
-import React, { memo } from 'react';
+import React, { memo, FC } from 'react';
 import { Input, Checkbox, DatePicker, Card, Row, Col, Button, Select } from 'antd';
 import AddBookPopup from '../AddBookPopup/AddBookPopup';
 import { GENRE_OPTIONS } from '../../../utils/consts';
 import useBookFilters from '../../../hooks/useBookFilters';
 import styles from './bookfilter.module.css';
-import { BookFilterProps } from "../../../types";
+import { IBookFilterProps } from "../../../types";
 
 const { Option } = Select;
 
-const BookFilterComponent: React.FC<BookFilterProps> = ({ onFilterChange }) => {
+const BookFilter: FC<IBookFilterProps> = memo(({ onFilterChange }) => {
     const {
         filters,
         isModalOpen,
         handleChange,
-        applyFilters,
         openModal,
         closeModal
     } = useBookFilters({ onFilterChange });
@@ -59,6 +58,7 @@ const BookFilterComponent: React.FC<BookFilterProps> = ({ onFilterChange }) => {
                             value={filters.year}
                             onChange={(date) => handleChange('year', date)}
                             disabled={!filters.filterByYear}
+                            allowClear
                         />
                     </Col>
                     <Col flex="1">
@@ -75,7 +75,6 @@ const BookFilterComponent: React.FC<BookFilterProps> = ({ onFilterChange }) => {
                         </Select>
                     </Col>
                     <Col flex="auto" className={styles['filter-buttons-container']}>
-                        <Button type="primary" onClick={applyFilters}>Поиск</Button>
                         <Button type="default" onClick={openModal} style={{ marginLeft: 8 }}>Добавить книгу</Button>
                     </Col>
                 </Row>
@@ -83,10 +82,6 @@ const BookFilterComponent: React.FC<BookFilterProps> = ({ onFilterChange }) => {
             <AddBookPopup visible={isModalOpen} onClose={closeModal} />
         </>
     );
-};
-
-const BookFilter = memo(BookFilterComponent);
+});
 
 export default BookFilter;
-
-

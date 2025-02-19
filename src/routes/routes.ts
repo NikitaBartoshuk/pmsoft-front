@@ -1,7 +1,7 @@
-import RegisterPage from './pages/RegisterPage/RegisterPage';
-import { LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE } from './utils/consts';
-import LoginPage from './pages/LoginPage/LoginPage';
-import MainPage from './pages/MainPage/MainPage';
+import RegisterPage from '../pages/RegisterPage/RegisterPage';
+import { LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE } from '../utils/consts';
+import LoginPage from '../pages/LoginPage/LoginPage';
+import MainPage from '../pages/MainPage/MainPage';
 
 interface RouteType {
     path: string;

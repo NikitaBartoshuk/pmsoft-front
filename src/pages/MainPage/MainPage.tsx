@@ -1,21 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, FC } from "react";
 import { Card, Row, Col, Typography } from "antd";
 import { API } from '../../utils/consts';
 import AppHeader from "./Header/AppHeader";
 import BookFilter from "./BookFilter/BookFilter";
 import BookPopup from "./BookPopup/BookPopup";
 import { useBooks } from "../../hooks/useBooks";
-import { Book } from '../../types'
+import { IBook } from '../../types'
 
 const { Meta } = Card;
 
-const MainPage = () => {
+const MainPage: FC = () => {
     const { books, handleFilterChange } = useBooks();
-    const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+    const [selectedBook, setSelectedBook] = useState<IBook | null>(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const showModal = (book: Book) => {
-        console.log(book)
+    const showModal = (book: IBook) => {
         setSelectedBook(book);
         setIsModalVisible(true);
     };
@@ -35,7 +34,7 @@ const MainPage = () => {
                 </Typography.Title>
             ) : (
                 <Row gutter={[24, 24]} justify="start" style={{ padding: "0 16px" }}>
-                    {books?.items.map((book: Book) => (
+                    {books?.items.map((book: IBook) => (
                         <Col key={book.id} xs={24} sm={12} md={8} lg={6} xl={6}>
                             <Card
                                 hoverable

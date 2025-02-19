@@ -1,30 +1,48 @@
 import { useState, useCallback } from "react";
 import dayjs from "dayjs";
-import { Filters, UseBookFiltersProps, UseBookFiltersReturn } from "../types";
+import { IFilters, IUseBookFiltersProps, IUseBookFiltersReturn } from "../types";
 
-const useBookFilters = ({ onFilterChange }: UseBookFiltersProps): UseBookFiltersReturn => {
-    const [filters, setFilters] = useState<Filters>({
+const useBookFilters = ({ onFilterChange }: IUseBookFiltersProps): IUseBookFiltersReturn => {
+    const [filters, setFilters] = useState<IFilters>({
         name: "",
         author: "",
         genre: null,
         year: null,
         filterByAuthor: false,
         filterByYear: false,
+        filterByName: true,
     });
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    const handleChange = useCallback((key: keyof Filters, value: string | boolean | null) => {
-        setFilters(prev => ({ ...prev, [key]: value }));
-    }, []);
+    const handleChange = useCallback((key: keyof IFilters, value: string | boolean | null) => {
 
-    const applyFilters = useCallback(() => {
-        onFilterChange({
-            name: filters.name || null,
-            author: filters.filterByAuthor ? filters.author : null,
-            year: filters.filterByYear && filters.year ? dayjs(filters.year).format("YYYY") : null,
-            genre: filters.genre,
+        setFilters(prev => {
+            if (key === "year" && value === null) {
+                value = null;
+            }
+
+            const newFilters = { ...prev, [key]: value };
+
+            let formattedYear = null;
+
+            if (newFilters.filterByYear && newFilters.year) {
+                const year = dayjs(newFilters.year);
+                if (year.isValid()) {
+                    formattedYear = year.format("YYYY");
+                }
+            }
+
+            onFilterChange({
+                name: newFilters.filterByName ? newFilters.name : null,
+                author: newFilters.filterByAuthor ? newFilters.author : null,
+                year: formattedYear,
+                genre: newFilters.genre,
+            });
+
+            return newFilters;
         });
-    }, [filters, onFilterChange]);
+    }, [onFilterChange]);
+
 
     const openModal = useCallback(() => setIsModalOpen(true), []);
     const closeModal = useCallback(() => setIsModalOpen(false), []);
@@ -33,11 +51,11 @@ const useBookFilters = ({ onFilterChange }: UseBookFiltersProps): UseBookFilters
         filters,
         isModalOpen,
         handleChange,
-        applyFilters,
         openModal,
         closeModal,
     };
 };
+
 
 export default useBookFilters;
 

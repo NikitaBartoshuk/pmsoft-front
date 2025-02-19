@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { routes } from './routes';
-import { LOGIN_ROUTE } from './utils/consts';
+import { LOGIN_ROUTE } from '../utils/consts';
 
 interface RouteType {
     path: string;
@@ -9,7 +9,6 @@ interface RouteType {
 }
 
 const AppRouter: React.FC = () => {
-    const isAuth = false;
 
     return (
         <Routes>

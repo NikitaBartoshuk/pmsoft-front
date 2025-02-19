@@ -1,6 +1,6 @@
-import { BookState, BookAction, BookActionTypes } from "../../types";
+import { IBookState, BookAction, BookActionTypes } from "../../types";
 
-const defaultState: BookState = {
+const defaultState: IBookState = {
     books: {
         items: [],
         isError: false
@@ -8,9 +8,9 @@ const defaultState: BookState = {
 };
 
 export const bookReducer = (
-    state: BookState = defaultState,
+    state: IBookState = defaultState,
     action: BookAction
-): BookState => {
+): IBookState => {
     switch (action.type) {
         case BookActionTypes.GET_BOOKS:
             return {

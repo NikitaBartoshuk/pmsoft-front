@@ -1,35 +1,28 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Flex, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { useRegister } from '../../hooks/useRegister';
 import { useValidationRules } from "../../utils/validationRules";
-import { RegisterFormValues } from '../../types'
+import { IRegisterFormValues } from '../../types'
+import styles from './registerpage.module.css'
 
 const { Title } = Typography;
 
-const RegisterPage: React.FC = () => {
+const RegisterPage: FC = () => {
     const { onRegister, loading } = useRegister();
 
-    const handleFinish = (values: RegisterFormValues) => {
+    const handleFinish = (values: IRegisterFormValues) => {
         onRegister(values);
     };
     const validationRules = useValidationRules();
 
     return (
         <Flex style={{ height: '100vh' }} justify="center" align="center">
-            <Form<RegisterFormValues>
+            <Form<IRegisterFormValues>
                 name="register"
                 initialValues={{ remember: true }}
-                style={{
-                    width: 360,
-                    padding: 24,
-                    borderRadius: 12,
-                    border: '1px solid #d9d9d9',
-                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-                    background: 'white',
-                    textAlign: 'center'
-                }}
+                className={styles['register-page-form']}
                 onFinish={handleFinish}
             >
                 <Title level={3} style={{ marginBottom: 20 }}>Регистрация</Title>

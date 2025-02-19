@@ -2,14 +2,14 @@ import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../stores/actions/userAction";
 import { useAppDispatch } from "../hooks/reduxHooks";
-import { RegisterValues, UseRegisterReturn } from "../types";
+import { IRegisterValues, IUseRegisterReturn } from "../types";
 
-export const useRegister = (): UseRegisterReturn => {
+export const useRegister = (): IUseRegisterReturn => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
 
-    const onRegister = useCallback(async (values: RegisterValues) => {
+    const onRegister = useCallback(async (values: IRegisterValues) => {
         setLoading(true);
         try {
             const token = await dispatch(registerUser(values.email, values.password));

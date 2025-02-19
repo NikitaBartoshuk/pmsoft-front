@@ -2,14 +2,14 @@ import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../stores/actions/userAction";
 import { useAppDispatch } from "../hooks/reduxHooks";
-import { LoginValues, UseLoginReturn } from "../types";
+import { ILoginValues, IUseLoginReturn } from "../types";
 
-export const useLogin = (): UseLoginReturn => {
+export const useLogin = (): IUseLoginReturn => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
 
-    const onLogin = useCallback(async (values: LoginValues) => {
+    const onLogin = useCallback(async (values: ILoginValues) => {
         setLoading(true);
         try {
             const token = await dispatch(loginUser(values.email, values.password));

@@ -1,13 +1,13 @@
-import { UserState, UserAction, UserActionTypes } from "../../types";
+import { IUserState, UserAction, UserActionTypes } from "../../types";
 
-const defaultState: UserState = {
+const defaultState: IUserState = {
     token: ''
 };
 
 export const userReducer = (
-    state: UserState = defaultState,
+    state: IUserState = defaultState,
     action: UserAction
-): UserState => {
+): IUserState => {
     switch (action.type) {
         case UserActionTypes.REG_USER:
         case UserActionTypes.LOGIN_USER:

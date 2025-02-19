@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import { Modal, Row, Col, Typography, Button } from 'antd';
 import { deleteBook } from '../../../stores/actions/bookAction';
 import AddBookPopup from '../AddBookPopup/AddBookPopup';
 import { API } from '../../../utils/consts';
+import { useAppDispatch } from "../../../hooks/reduxHooks";
+import { IBookPopupProps } from '../../../types';
 import styles from './bookpopup.module.css';
-import {useAppDispatch} from "../../../hooks/reduxHooks";
-import {BookPopupProps} from '../../../types'
 
 const { Title, Text } = Typography;
 
 
-const BookPopup: React.FC<BookPopupProps> = ({ book, visible, onClose }) => {
+const BookPopup: FC<IBookPopupProps> = ({ book, visible, onClose }) => {
+
     const dispatch = useAppDispatch();
     const [isEditMode, setIsEditMode] = useState(false);
 
@@ -18,8 +19,6 @@ const BookPopup: React.FC<BookPopupProps> = ({ book, visible, onClose }) => {
         if (book?.id) {
             dispatch(deleteBook(book.id));
             onClose();
-        } else {
-            console.error("Ошибка: ID книги не определен");
         }
     };
 
