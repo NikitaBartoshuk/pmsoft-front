@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { Layout, Typography } from "antd";
 import { Link } from "react-router-dom";
 import logo from '../../../assets/logo.png'
@@ -7,7 +7,7 @@ import styles from './appheader.module.css'
 const { Header } = Layout;
 const { Title } = Typography;
 
-const AppHeader: React.FC = () => {
+const AppHeader: FC = () => {
     return (
         <Header className={styles['header-container']}>
             <img

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { routes } from './routes';
 import { LOGIN_ROUTE } from '../utils/consts';
@@ -8,7 +8,7 @@ interface RouteType {
     Component: React.ComponentType;
 }
 
-const AppRouter: React.FC = () => {
+const AppRouter: FC = () => {
 
     return (
         <Routes>
